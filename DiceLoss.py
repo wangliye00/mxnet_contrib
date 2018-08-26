@@ -35,7 +35,7 @@ class DiceLoss(Loss):
         
         dice_coef = 2 * (F.sum(intersection, axis=1) + smooth) \
                     / (F.sum(pred_flat, axis=1) + F.sum(label_flat, axis=1) + smooth)
-        loss = 1 - dice_coef
+        loss = 1 - (F.sum(dice_coef)) / N
         
         return loss
                     
