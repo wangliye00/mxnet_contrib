@@ -20,13 +20,19 @@ class DiceLoss(Loss):
     - label: binary labels for groundtruth , 5D array
     note: 5D array - batch_size*channels*volume shape
 """
-    def __init__(self, **kwargs):
+    def __init__(self, axis = 1, apply_softmax = True, **kwargs):
         super(DiceLoss, self).__init__(**kwargs)
+        self.axis = axis
+        self.apply_softmax = apply_softmax
     
     def hybrid_forward(self, F, pred, label, sample_weight = None):
         N = label.shape[0]
         
-        pred_falt = F.Flatten(pred[:,0,:,:,:])
+        #convert output to probability, and use groundtruth to calculate loss
+        if apply_softmax:
+            pred = F.softmax(pred, axis = self.axis)
+         
+        pred_falt = F.Flatten(pred[:,0])
         label_flat = F.Flatten(label)
         
         smooth = 1e-4
