@@ -14,6 +14,7 @@ from mxnet.gluon.loss import Loss
 
 class DiceLoss(Loss):
 """Apply dice loss for binary segmentaion
+   DiceLoss can be customized by redefining forward and backward method
     
     Inputs:
     - pred: prediction for groudtruth, 5D array
