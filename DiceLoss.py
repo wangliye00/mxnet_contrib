@@ -21,8 +21,8 @@ class DiceLoss(Loss):
     - label: binary labels for groundtruth , 5D array
     note: 5D array - batch_size*channels*volume shape
 """
-    def __init__(self, axis = 1, apply_softmax = True, **kwargs):
-        super(DiceLoss, self).__init__(**kwargs)
+    def __init__(self, axis = 1, apply_softmax = True, weight=None, batch_axis=0, **kwargs):
+        super(DiceLoss, self).__init__(weight, batch_axis, **kwargs)
         self.axis = axis
         self.apply_softmax = apply_softmax
     
@@ -40,9 +40,9 @@ class DiceLoss(Loss):
         
         intersection = pred_flat * label_flat
         
-        dice_coef = 2 * (F.sum(intersection, axis=1) + smooth) \
-                    / (F.sum(pred_flat, axis=1) + F.sum(label_flat, axis=1) + smooth)
-        loss = 1 - (F.sum(dice_coef)) / N
+        dice_coef = 2 * (F.sum(intersection) + smooth) \
+                    / (F.sum(pred_flat) + F.sum(label_flat) + smooth)
+        loss = 1 - dice_coef / N
         
         return loss
                     
