@@ -172,8 +172,8 @@ class OutputConvBlock(nn.HybridBlock):
     def hybrid_forward(self, F, x):
         return self.ops(x)
         
-class BrainSegNet_v1(nn.HybridBlock):
-    """Brain ROIs segmentation
+class VNet_v1(nn.HybridBlock):
+    """3D VNet for segmentation
     
     Members
     --------------------------
@@ -185,7 +185,7 @@ class BrainSegNet_v1(nn.HybridBlock):
     """
     
     def __init__(self, num_class, ** kwargs):
-        super(BrainSegNet_v1, self).__init__(**kwargs)
+        super(VNet_v1, self).__init__(**kwargs)
         
         self.init_channels = 256
         self.num_class = num_class
