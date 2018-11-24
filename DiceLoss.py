@@ -83,19 +83,19 @@ class BinaryDiceLoss_v2(mxnet.autograd.Function):
         pred, target = self.saved_tensors
         intersect, sum = self.intersect, self.sum
 
-        a = 2 / sum
-        b = 4 * intersect / sum / sum
+        tmp1 = 2 / sum
+        tmp2 = 4 * intersect / sum / sum
 
         batch_size = a.shape[0]
-        a = a.reshape(batch_size, 1, 1, 1, 1)
-        b = b.reshape(batch_size, 1, 1, 1, 1)
+        tmp1 = tmp1.reshape(batch_size, 1, 1, 1, 1)
+        tmp2 = tmp2.reshape(batch_size, 1, 1, 1, 1)
 
-        grad_diceeloss = -a * target + b * pred[:, 1:2]
+        grad_diceeloss = -tmp1 * target + tmp2 * pred[:, 1:2]
 
         input_grads = nd.concat(grad_diceeloss * -output_grads.asscalar(),
                                grad_diceeloss * output_grads.asscalar(), dim=1)
-        target_grads = nd.ones(shape=(target.shape))
-
+        target_grads = nd.ones(shape=target.shape, ctx=target.context)
+        
         return input_grads, target_grads
 
 
