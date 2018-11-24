@@ -94,9 +94,8 @@ class BinaryDiceLoss_v2(mxnet.autograd.Function):
 
         input_grads = nd.concat(grad_diceeloss * -output_grads.asscalar(),
                                grad_diceeloss * output_grads.asscalar(), dim=1)
-        print "backward called !"
-        print input_grads.shape
+        target_grads = nd.ones(shape=(target.shape))
 
-        return input_grads
+        return input_grads, target_grads
 
 
