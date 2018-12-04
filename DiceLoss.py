@@ -83,7 +83,7 @@ class BinaryDiceLoss_v2(mxnet.autograd.Function):
         pred, target = self.saved_tensors
         intersect, sum = self.intersect, self.sum
 
-        tmp1 = 2 / sum
+        tmp1 = 2 / sum  
         tmp2 = 4 * intersect / sum / sum
 
         batch_size = a.shape[0]
